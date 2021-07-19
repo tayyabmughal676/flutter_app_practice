@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
           child: Text(
             "Flutter App!",
             style: TextStyle(
-              fontSize: 40,
+              fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
           ),
