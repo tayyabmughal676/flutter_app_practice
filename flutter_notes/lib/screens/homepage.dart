@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_notes/database/database_helper.dart';
+import 'package:flutter_notes/models/Task.dart';
 import 'package:flutter_notes/screens/taskpage.dart';
 import 'package:flutter_notes/widgets.dart';
 
@@ -10,7 +11,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
@@ -40,8 +42,19 @@ class _HomePageState extends State<HomePage> {
                               child: ListView.builder(
                                   itemCount: snapshot.data?.length,
                                   itemBuilder: (context, index) {
-                                    return TaskCardWidget(
-                                      title: snapshot.data[index]!.title,
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => TaskPage(
+                                                    task: snapshot.data[index],
+                                                  )),
+                                        );
+                                      },
+                                      child: TaskCardWidget(
+                                        title: snapshot.data[index]!.title,
+                                      ),
                                     );
                                   }),
                             );
@@ -56,7 +69,11 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => TaskPage()),
+                        MaterialPageRoute(
+                            builder: (context) => TaskPage(
+                                  task: Task(
+                                      id: null, title: null, description: null),
+                                )),
                       ).then((value) {
                         setState(() {});
                       });
@@ -80,4 +97,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

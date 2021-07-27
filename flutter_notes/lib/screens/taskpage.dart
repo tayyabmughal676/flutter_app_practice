@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_notes/database/database_helper.dart';
 import 'package:flutter_notes/models/Task.dart';
-import 'package:flutter_notes/widgets.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:flutter_notes/models/Todo.dart';
 
 class TaskPage extends StatefulWidget {
-  const TaskPage({Key? key}) : super(key: key);
+  late final Task task;
+
+  TaskPage({required this.task});
 
   @override
   _TaskPageState createState() => _TaskPageState();
 }
 
 class _TaskPageState extends State<TaskPage> {
+  String _taskTitle = "";
+
+  @override
+  void initState() {
+    if (widget.task.id != null) {
+      _taskTitle = widget.task.title!;
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,16 +55,22 @@ class _TaskPageState extends State<TaskPage> {
                         onSubmitted: (value) async {
                           print("Field Value: $value");
 
+                          // check if textField isn't empty
                           if (value != "") {
-                            DatabaseHelper _dbHelper = DatabaseHelper();
+                            //check if task is null
+                            if (widget.task.id == null) {
+                              DatabaseHelper _dbHelper = DatabaseHelper();
 
-                            Task _newTask = Task(title: value);
-                            await _dbHelper.insertTask(_newTask);
+                              Task _newTask = Task(title: value);
+                              await _dbHelper.insertTask(_newTask);
 
-                            print("Task Added");
-
+                              print("Task Added");
+                            } else {
+                              print("Update existing task");
+                            }
                           }
                         },
+                        controller: TextEditingController()..text = _taskTitle,
                         decoration: InputDecoration(
                             hintText: "Enter Note Title...",
                             border: InputBorder.none),
@@ -73,16 +91,62 @@ class _TaskPageState extends State<TaskPage> {
                         contentPadding: EdgeInsets.symmetric(horizontal: 24.0)),
                   ),
                 ),
-                TodoWidget(
-                  text: "Create your First Note.",
-                  isDone: true,
-                ),
-                TodoWidget(
-                  isDone: true,
-                ),
-                TodoWidget(
-                  isDone: false,
-                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Row(
+                        children: [
+                          Container(
+                              width: 20.0,
+                              height: 20.0,
+                              margin: EdgeInsets.only(right: 12.0),
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(6.0),
+                                  border: Border.all(
+                                      color: Color(0xFF86829D), width: 1.5)),
+                              child: Image(
+                                image: AssetImage(
+                                  'assets/images/check_icon.png',
+                                ),
+                              )),
+                          Expanded(
+                              child: TextField(
+                            onSubmitted: (value) async {
+                              print("Todo: $value");
+
+                              // check if textField isn't empty
+                              if (value != "") {
+                                //check if task is null
+                                if (widget.task.id == null) {
+                                  DatabaseHelper _dbHelper = DatabaseHelper();
+
+                                  Todo _newTodo = Todo(
+                                      title: value,
+                                      id: 0,
+                                      isDone: 0,
+                                      taskId: widget.task.id ?? 0);
+
+                                  print("Todo Model: ${_newTodo.taskId}");
+
+                                  await _dbHelper.insertTodo(_newTodo);
+
+                                  print("Todo Added $value");
+                                } else {
+                                  print("Update existing Todo");
+                                }
+                              }
+                            },
+                            decoration: InputDecoration(
+                                hintText: "Enter Todo Item...",
+                                border: InputBorder.none),
+                          ))
+                        ],
+                      ),
+                    )
+                  ],
+                )
               ],
             ),
             Positioned(
