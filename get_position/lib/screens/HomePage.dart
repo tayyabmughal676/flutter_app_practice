@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  final List<String> items = List<String>.generate(40, (i) => 'Item $i');
+  final List<String> items = List<String>.generate(70, (i) => 'Item $i');
 
   Future<void> setPositionVal(value) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -97,11 +97,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           itemBuilder: (context, index) {
             return Container(
               width: double.infinity,
-              margin: EdgeInsets.only(bottom: 20.0),
+              margin: EdgeInsets.only(bottom: 12.0),
               padding: EdgeInsets.symmetric(vertical: 32.0, horizontal: 24.0),
               decoration: BoxDecoration(
                   color: Colors.deepOrange,
-                  borderRadius: BorderRadius.circular(20.0)),
+                  borderRadius: BorderRadius.circular(12.0)),
               child: ListTile(
                 leading: Icon(Icons.schedule_outlined),
                 title: Text(items[index]),
