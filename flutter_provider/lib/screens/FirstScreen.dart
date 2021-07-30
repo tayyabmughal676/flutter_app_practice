@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider/models/ProviderModel.dart';
 import 'package:flutter_provider/models/TaskData.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -12,70 +13,75 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-
-  getMyTitle(context, index){
-    var title = context.watch<TaskData>().listTask[index].title;
-    return  title;
-  }
+  /*
+  * Simple Provider Example
+  * Provider
+  * Model class
+  * Consumer
+  *
+  * */
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("First Screen"),
-        backgroundColor: Colors.deepOrange,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.lightBlue,
+    return Provider(
+      create: (context) => ProviderModel(),
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text("First Screen"),
+            backgroundColor: Colors.deepOrange,
           ),
-          child: ListView.builder(
-              itemCount: context.watch<TaskData>().listTask.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: SecondScreen(),
-                            type: PageTransitionType.fade));
-                  },
-                  title: Text(
-                      "${context.watch<TaskData>().listTask[index].title}"),
-                  trailing: Checkbox(
-                    value: context.watch<TaskData>().listTask[index].isDone,
-                    onChanged: (value) {
-                      context.read<TaskData>().toggle(index, value);
-                      print("$value");
-                    },
+          body: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          padding: const EdgeInsets.all(20),
+                          color: Colors.green[200],
+                          child: Consumer<ProviderModel>(
+                            //   <--- Consumer
+                            builder: (context, myModel, child) {
+                              return ElevatedButton(
+                                child: Text('Click Me :)'),
+                                onPressed: () {
+                                  // We have access to the model.
+                                  myModel.doSomething();
+                                },
+                              );
+                            },
+                          )),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(35),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.deepOrange,
+                        ),
+                        child: Consumer<ProviderModel>(
+                          //  <--- Consumer
+                          builder: (context, myModel, child) {
+                            return Text(
+                              myModel.someValue,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              }),
-        ),
+                ),
+              ],
+            ),
+          )
       ),
     );
   }
 }
-
-// Column(
-// mainAxisAlignment: MainAxisAlignment.center,
-// children: [
-// Container(
-// child: Center(child: Text("Hello, I'm First")),
-// ),
-// SizedBox(
-// height: 10.0,
-// ),
-// ElevatedButton(
-// onPressed: () {
-// Navigator.push(
-// context,
-// PageTransition(
-// child: SecondScreen(), type: PageTransitionType.fade));
-// },
-// child: Text("Go Second"))
-// ],
-// ),
