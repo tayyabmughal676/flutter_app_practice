@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 
 class ProviderModel extends ChangeNotifier{
 
+  bool isHome = true;
+  bool isFeed = false;
+  bool isUser = false;
+  bool isSetting = false;
+
   int mIndex = 0;
   BuildContext? context;
 

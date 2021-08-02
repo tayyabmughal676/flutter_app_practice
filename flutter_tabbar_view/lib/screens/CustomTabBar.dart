@@ -22,10 +22,6 @@ class _CustomTabBarState extends State<CustomTabBar> {
   ];
 
   double _tabPadding = 26.0;
-  bool _isHome = true;
-  bool _isFeed = false;
-  bool _isUser = false;
-  bool _isSetting = false;
 
   late ProviderModel _providerModel;
 
@@ -64,19 +60,19 @@ class _CustomTabBarState extends State<CustomTabBar> {
                           return GestureDetector(
                             onTap: () {
                               print("Home");
-                              setState(() {
-                                _isHome = !_isHome;
-                                _isFeed = false;
-                                _isUser = false;
-                                _isSetting = false;
-                                provider.setCurrentIndex(0);
-                              });
+                              provider.isHome = !provider.isHome;
+                              provider.isFeed = false;
+                              provider.isUser = false;
+                              provider.isSetting = false;
+                              provider.setCurrentIndex(0);
                             },
                             child: Text(
                               "Home",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: _isHome ? Colors.blue : Colors.black),
+                                  color: provider.isHome
+                                      ? Colors.blue
+                                      : Colors.black),
                             ),
                           );
                         },
@@ -89,19 +85,19 @@ class _CustomTabBarState extends State<CustomTabBar> {
                           return GestureDetector(
                             onTap: () {
                               print("Feed");
-                              setState(() {
-                                _isFeed = !_isFeed;
-                                _isHome = false;
-                                _isUser = false;
-                                _isSetting = false;
-                                provider.setCurrentIndex(1);
-                              });
+                              provider.isFeed = !provider.isFeed;
+                              provider.isHome = false;
+                              provider.isUser = false;
+                              provider.isSetting = false;
+                              provider.setCurrentIndex(1);
                             },
                             child: Text(
                               "Feed",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: _isFeed ? Colors.blue : Colors.black),
+                                  color: provider.isFeed
+                                      ? Colors.blue
+                                      : Colors.black),
                             ),
                           );
                         },
@@ -114,19 +110,19 @@ class _CustomTabBarState extends State<CustomTabBar> {
                           return GestureDetector(
                             onTap: () {
                               print("User");
-                              setState(() {
-                                _isUser = !_isUser;
-                                _isFeed = false;
-                                _isHome = false;
-                                _isSetting = false;
-                                provider.setCurrentIndex(2);
-                              });
+                              provider.isUser = !provider.isUser;
+                              provider.isFeed = false;
+                              provider.isHome = false;
+                              provider.isSetting = false;
+                              provider.setCurrentIndex(2);
                             },
                             child: Text(
                               "User",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: _isUser ? Colors.blue : Colors.black),
+                                  color: provider.isUser
+                                      ? Colors.blue
+                                      : Colors.black),
                             ),
                           );
                         },
@@ -139,20 +135,19 @@ class _CustomTabBarState extends State<CustomTabBar> {
                           return GestureDetector(
                             onTap: () {
                               print("Setting");
-                              setState(() {
-                                _isSetting = !_isSetting;
-                                _isFeed = false;
-                                _isUser = false;
-                                _isHome = false;
-                                provider.setCurrentIndex(3);
-                              });
+                              provider.isSetting = !provider.isSetting;
+                              provider.isFeed = false;
+                              provider.isUser = false;
+                              provider.isHome = false;
+                              provider.setCurrentIndex(3);
                             },
                             child: Text(
                               "Setting",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      _isSetting ? Colors.blue : Colors.black),
+                                  color: provider.isSetting
+                                      ? Colors.blue
+                                      : Colors.black),
                             ),
                           );
                         },
