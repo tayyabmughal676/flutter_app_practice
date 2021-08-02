@@ -35,6 +35,8 @@ class _CustomTabBarState extends State<CustomTabBar> {
 
     // _providerModel = Provider.of(context)
 
+    _providerModel.init(context: context, index: 0);
+
     super.initState();
   }
 
